@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from 'react';
+import { useRouter } from 'next/navigation';
 import Image from 'next/image';
 import { Label, Button, Checkbox } from 'flowbite-react';
 import { HiMail, HiLockClosed } from 'react-icons/hi';
@@ -9,12 +10,15 @@ const LoginForm: React.FC = () => {
   const [username, setUsername] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const router = useRouter();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     console.log('Username:', username);
     console.log('Password:', password);
     console.log('Remember Me:', rememberMe);
+    // Navegar a la página movida (ruta limpia)
+    router.push('/dashboard');
   };
 
   return (
@@ -37,7 +41,7 @@ const LoginForm: React.FC = () => {
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <HiMail className="w-5 h-5 text-gray-500" />
+                <HiMail className="w-5 h-5 text-slate-300" />
               </div>
               <input
                 id="username"
@@ -56,7 +60,7 @@ const LoginForm: React.FC = () => {
             </div>
             <div className="relative">
               <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-                <HiLockClosed className="w-5 h-5 text-gray-500" />
+                <HiLockClosed className="w-5 h-5 text-slate-300" />
               </div>
               <input
                 id="password"
