@@ -20,8 +20,8 @@ const montserrat = Montserrat({
 });
 
 export const metadata: Metadata = {
-  title: "Spot",
-  description: "A Next Application using Flowbite-React",
+  title: "Capital One - Sign In",
+  description: "Secure banking portal for Capital One customers",
 };
 
 export default function RootLayout({
@@ -30,9 +30,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
-        <title>Spot</title>
+        <title>Capital One - Sign In</title>
       </head>
-      <body className={`${inter.variable} ${montserrat.variable} antialiased`}>
+      <body className={`${inter.variable} ${montserrat.variable} antialiased flex flex-col min-h-screen`}>
         {children}
       </body>
     </html>
