@@ -1,0 +1,92 @@
+# Nombre del workflow
+name: PR Check
+
+# Define cuándo se ejecuta este workflow
+on:
+  pull_request:
+    branches: [ master ] # Se activa con Pull Requests dirigidos a la rama 'master'
+
+# Configuración de concurrencia
+concurrency:
+  # Agrupa las ejecuciones por el nombre de la rama del PR
+  group: pr-${{ github.ref }}
+  # Cancela ejecuciones en progreso para el mismo grupo si se dispara una nueva
+  cancel-in-progress: true
+
+# Define los permisos que tendrá el workflow
+permissions:
+  contents: read       # Permiso para leer el contenido del repositorio
+  pull-requests: read  # Permiso para leer la información del Pull Request
+
+# Define los trabajos (jobs) que se ejecutarán
+jobs:
+  # --- PRIMER JOB: Verificación de Calidad de Código ---
+  quality:
+    runs-on: ubuntu-latest # Se ejecuta en una máquina virtual de Ubuntu
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instala la versión específica de Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.20'
+
+      # 3. Configura el caché para las dependencias de Bun
+      - name: Cache Bun dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.bun/install/cache # La carpeta a cachear
+          # Llave única para el caché, basada en el archivo de lock
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+          # Claves de restauración si no se encuentra una llave exacta
+          restore-keys: |
+            ${{ runner.os }}-bun-
+
+      # 4. Instala las dependencias del proyecto
+      - name: Install dependencies
+        run: bun install
+
+      # 5. Ejecuta el linter para revisar el estilo del código
+      - name: Lint
+        run: bun run lint
+
+      # 6. Ejecuta el chequeo de tipos (TypeScript)
+      - name: Type check
+        run: bun run typecheck
+
+  # --- SEGUNDO JOB: Compilación del Proyecto ---
+  build:
+    runs-on: ubuntu-latest # Se ejecuta en una máquina virtual de Ubuntu
+    needs: quality         # Este job NO se ejecuta hasta que el job 'quality' termine con éxito
+    steps:
+      # 1. Descarga el código del repositorio
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      # 2. Instala la versión específica de Bun
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
+        with:
+          bun-version: '1.2.20'
+
+      # 3. Restaura el caché de dependencias (ahorra tiempo)
+      - name: Restore Bun cache
+        uses: actions/cache@v4
+        with:
+          path: ~/.bun/install/cache
+          key: ${{ runner.os }}-bun-${{ hashFiles('bun.lockb') }}
+          restore-keys: ${{ runner.os }}-bun-
+
+      # 4. Instala las dependencias (rápido si el caché funcionó)
+      - name: Install dependencies
+        run: bun install
+
+      # 5. Ejecuta el script de compilación (build)
+      - name: Build
+        run: bun run build
+      
+      # (Se eliminó el paso 'Test' que ejecutaba 'bun test --coverage')
