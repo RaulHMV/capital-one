@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useRouter, usePathname } from 'next/navigation';
 import { 
   HiHome, 
   HiCurrencyDollar, 
@@ -36,15 +37,20 @@ const NavItem: React.FC<NavItemProps> = ({ icon: Icon, label, isActive, onClick 
 );
 
 export const BottomNavigationBar: React.FC = () => {
-  const [activeTab, setActiveTab] = React.useState('Home');
+  const router = useRouter();
+  const pathname = usePathname();
 
   const navItems = [
-    { icon: HiHome, label: 'Home' },
-    { icon: HiCurrencyDollar, label: 'Pay/move' },
-    { icon: HiSparkles, label: 'Chat' },
-    { icon: HiCreditCard, label: 'Benefits' },
-    { icon: HiUserCircle, label: 'Profile' },
+    { icon: HiHome, label: 'Home', path: '/dashboard' },
+    { icon: HiCurrencyDollar, label: 'Pay/move', path: '/pay-move' },
+    { icon: HiSparkles, label: 'Chat', path: '/chat' },
+    { icon: HiCreditCard, label: 'Benefits', path: '/benefits' },
+    { icon: HiUserCircle, label: 'Profile', path: '/profile' },
   ];
+
+  const handleNavigation = (path: string) => {
+    router.push(path);
+  };
 
   return (
     <nav className="
@@ -59,11 +65,8 @@ export const BottomNavigationBar: React.FC = () => {
           key={item.label}
           icon={item.icon}
           label={item.label}
-          isActive={activeTab === item.label}
-          onClick={() => {
-            setActiveTab(item.label);
-            console.log(`Navigate to ${item.label}`);
-          }}
+          isActive={pathname === item.path}
+          onClick={() => handleNavigation(item.path)}
         />
       ))}
     </nav>
