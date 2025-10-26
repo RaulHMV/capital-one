@@ -53,7 +53,7 @@ export async function GET(request: NextRequest) {
       ${dataString}
 
       Busca depósitos que parezcan un salario (descripción con "salary", "payroll", etc.). 
-      Responde su pregunta basándote en la fecha del último depósito de salario (máximo 2-3 frases).
+      Responde su pregunta basándote en la fecha del último depósito de salario.
       Habla en español y en un tono casual. Por ejemplo: "Veo que recibiste tu depósito de salario el día X..."
     `;
 
