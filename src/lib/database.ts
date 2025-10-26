@@ -166,3 +166,29 @@ export async function getDeposits(customerId: string): Promise<Deposit[]> {
     throw new Error('No se pudieron obtener los depósitos');
   }
 }
+
+
+
+export async function getCustomerPrimaryAccount(customerId: string): Promise<Account | null> {
+  try {
+    console.log(`🔍 Buscando cuenta principal para customer_id: ${customerId}`);
+    const result = await sql`
+      SELECT * 
+      FROM account 
+      WHERE customer_id = ${customerId} 
+      AND type = 'Checking'
+      LIMIT 1
+    `;
+    
+    if (result.length === 0) {
+      console.log('⚠️ No se encontró cuenta Checking');
+      return null;
+    }
+    
+    console.log(`✅ Cuenta encontrada:`, result[0]);
+    return result[0] as Account;
+  } catch (error) {
+    console.error('❌ Error fetching primary account:', error);
+    throw new Error('No se pudo obtener la cuenta principal');
+  }
+}

@@ -13,7 +13,7 @@ export const BalanceSection: React.FC<BalanceSectionProps> = ({
   currentBalance 
 }) => {
   const formatCurrency = (amount: number) => {
-    const formatted = amount.toLocaleString('en-US', {
+    const formatted = Math.abs(amount).toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
     });
@@ -23,6 +23,7 @@ export const BalanceSection: React.FC<BalanceSectionProps> = ({
 
   const available = formatCurrency(availableBalance);
   const current = formatCurrency(currentBalance);
+  const isNegative = currentBalance < 0;
 
   return (
     <div className="bg-gradient-to-br from-blue-700 via-blue-800 to-blue-900 text-white px-6 py-8 pb-12 text-center rounded-b-3xl shadow-xl">
@@ -32,7 +33,7 @@ export const BalanceSection: React.FC<BalanceSectionProps> = ({
           <h3 className="text-4xl font-semibold tracking-tight">
             <span className="text-2xl align-top">$</span>
             {available.dollars}
-            <span className="text-2xl align-top">{available.cents}</span>
+            <span className="text-2xl align-top">.{available.cents}</span>
           </h3>
           <HiOutlineInformationCircle className="h-5 w-5 text-blue-200 cursor-pointer hover:text-white transition-colors" />
         </div>
@@ -44,11 +45,17 @@ export const BalanceSection: React.FC<BalanceSectionProps> = ({
       {/* Current Balance Badge */}
       <div className="flex items-center justify-center gap-3">
         <h4 className="text-2xl font-semibold">
-          <span className="text-lg align-top">$</span>
+          <span className="text-lg align-top">{isNegative ? '-$' : '$'}</span>
           {current.dollars}
-          <span className="text-lg align-top">{current.cents}</span>
+          <span className="text-lg align-top">.{current.cents}</span>
         </h4>
-        <span className="px-3 py-1 bg-blue-600 bg-opacity-50 border border-blue-400 rounded-full text-xs font-medium text-blue-100">
+        <span className={`
+          px-3 py-1 border rounded-full text-xs font-medium
+          ${isNegative 
+            ? 'bg-red-600 bg-opacity-50 border-red-400 text-red-100' 
+            : 'bg-blue-600 bg-opacity-50 border-blue-400 text-blue-100'
+          }
+        `}>
           Current Balance
         </span>
       </div>
