@@ -12,7 +12,7 @@ type Message = {
 const initialMessages: Message[] = [
   { 
     id: '1', 
-    text: "Hello! I'm Eno, your Capital One assistant. How can I help you today with your account?", 
+    text: "¡Hola! Soy Eno, tu asistente de Capital One. ¿Cómo puedo ayudarte hoy con tu cuenta?", 
     isUser: false 
   },
 ];
