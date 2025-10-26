@@ -1,6 +1,7 @@
 "use client";
 
 import React from 'react';
+import { useRouter } from 'next/navigation';
 import { Card } from '@/components/ui';
 import { 
   HiArrowRight, 
@@ -13,16 +14,37 @@ import {
 interface Action {
   icon: React.ElementType;
   label: string;
-  onClick?: () => void;
+  action: string;
 }
 
 export const QuickActions: React.FC = () => {
+  const router = useRouter();
+
   const actions: Action[] = [
-    { icon: HiArrowRight, label: 'Transfer', onClick: () => console.log('Transfer') },
-    { icon: HiCurrencyDollar, label: 'Deposit', onClick: () => console.log('Deposit') },
-    { icon: HiDocumentText, label: 'View Statement', onClick: () => console.log('View Statement') },
-    { icon: HiOutlineUser, label: 'Account Details', onClick: () => console.log('Account Details') },
+    { icon: HiArrowRight, label: 'Transfer', action: 'transfer' },
+    { icon: HiCurrencyDollar, label: 'Deposit', action: 'deposit' },
+    { icon: HiDocumentText, label: 'View Statement', action: 'statement' },
+    { icon: HiOutlineUser, label: 'Account Details', action: 'account' },
   ];
+
+  const handleActionClick = (action: string) => {
+    switch (action) {
+      case 'transfer':
+        router.push('/pay-move?action=transfer');
+        break;
+      case 'deposit':
+        router.push('/pay-move?action=deposit');
+        break;
+      case 'statement':
+        router.push('/statements');
+        break;
+      case 'account':
+        router.push('/account-details');
+        break;
+      default:
+        console.log(`Action: ${action}`);
+    }
+  };
 
   return (
     <Card className="mx-4 -mt-8 relative z-10 shadow-xl lg:mx-0 lg:mt-0" padding="md">
@@ -33,7 +55,7 @@ export const QuickActions: React.FC = () => {
         {actions.map((action, index) => (
           <button
             key={index}
-            onClick={action.onClick}
+            onClick={() => handleActionClick(action.action)}
             className="flex flex-col items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors duration-200 cursor-pointer"
           >
             <div className="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
