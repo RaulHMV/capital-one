@@ -9,6 +9,7 @@ interface ButtonProps {
   fullWidth?: boolean;
   onClick?: () => void;
   disabled?: boolean;
+  className?: string;
 }
 
 export const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ export const Button: React.FC<ButtonProps> = ({
   fullWidth = false,
   onClick,
   disabled = false,
+  className = '',
 }) => {
   const baseClasses = 'font-medium rounded-lg text-sm px-5 py-2.5 focus:ring-4 transition-colors duration-200';
   
@@ -34,7 +36,7 @@ export const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${baseClasses} ${variantClasses[variant]} ${widthClass}`}
+      className={`${baseClasses} ${variantClasses[variant]} ${widthClass} ${className}`}
     >
       {children}
     </button>

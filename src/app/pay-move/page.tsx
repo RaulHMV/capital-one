@@ -38,35 +38,30 @@ export default function PayMovePage() {
       icon: HiArrowRight, 
       label: 'Send Money', 
       description: 'Send to friends, family, or contacts',
-      color: 'blue'
     },
     { 
       id: 'transfer', 
       icon: HiSwitchHorizontal, 
       label: 'Transfer', 
       description: 'Move between your accounts',
-      color: 'green'
     },
     { 
       id: 'deposit', 
       icon: HiCurrencyDollar, 
       label: 'Deposit', 
       description: 'Deposit money to your account',
-      color: 'emerald'
     },
     { 
       id: 'pay-bill', 
       icon: HiCurrencyDollar, 
       label: 'Pay Bill', 
       description: 'Pay your bills on time',
-      color: 'purple'
     },
     { 
       id: 'zelle', 
       icon: HiUserGroup, 
       label: 'Zelle', 
       description: 'Fast payments with Zelle',
-      color: 'indigo'
     },
   ];
 
@@ -120,14 +115,8 @@ export default function PayMovePage() {
                           }
                         `}
                       >
-                        <div className={`
-                          p-3 rounded-xl
-                          ${selectedOption === option.id
-                            ? `bg-${option.color}-600 text-white`
-                            : `bg-${option.color}-100 text-${option.color}-700`
-                          }
-                        `}>
-                          <option.icon className="h-6 w-6" />
+                        <div className="p-3 bg-gray-100 rounded-xl hover:bg-gray-200 transition-colors">
+                          <option.icon className="h-6 w-6 text-gray-700" />
                         </div>
                         <div className="flex-1 text-left">
                           <h3 className="font-semibold text-gray-900 mb-1">{option.label}</h3>
